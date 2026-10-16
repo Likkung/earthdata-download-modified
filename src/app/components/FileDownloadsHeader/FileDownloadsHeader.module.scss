@@ -1,0 +1,194 @@
+@use "../../css/vars/colors" as colors;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header {
+  display: flex;
+  width: 100%;
+  align-items: start;
+  justify-content: left;
+  background-color: var(--color__blue--600);
+
+  .backLink {
+    width: 100%;
+    flex-grow: 1;
+    justify-content: start;
+    border: 0;
+    border-radius: 0;
+    background-color: var(--color__blue--600);
+    color: var(--color__white);
+  }
+}
+
+.progress {
+  display: grid;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--size__200);
+  padding-bottom: 0;
+  padding-left: var(--size__300);
+  grid-template:
+    [row1-start] "status-description actions" auto [row1-end]
+    [row2-start] "progress-meta progress-meta" auto [row2-end]
+    [row2-start] "progress-bar progress-bar" auto [row2-end]
+    / auto auto;
+  row-gap: 0.75rem;
+
+  @media (width >= 43em) {
+    padding-bottom: var(--size__200);
+    grid-template:
+    [row1-start] "status-description progress-meta actions" auto [row1-end]
+    / auto 1fr auto;
+  }
+}
+
+.statusDescription {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  grid-area: status-description;
+}
+
+.progressMeta {
+  grid-area: progress-meta;
+}
+
+.statusDescriptionPrimary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-right: var(--size__200);
+  color: var(--color__black--650);
+  font-weight: 500;
+
+  &.isActive {
+    color: var(--color__blue--600);
+  }
+
+  &.isCompleted {
+    color: var(--color__green--600);
+  }
+
+  &.isError {
+    color: var(--color__red--600);
+  }
+
+  &.isCancelled {
+    color: var(--color__grey--600);
+  }
+}
+
+.status {
+  display: block;
+  margin-right: var(--size__200);
+  font-size: var(--text__normal);
+  font-weight: 600;
+}
+
+.hasErrorsIcon {
+  margin-right: var(--size__100);
+  color: var(--color__red--550);
+}
+
+.statusPercent {
+  padding-left: var(--size__100);
+  margin-right: var(--size__150);
+  font-size: var(--text__small);
+  font-weight: 600;
+}
+
+.statusDescriptionIcon {
+  flex-shrink: 0;
+  margin-right: var(--size__100);
+  font-size: var(--text__normal);
+
+  &.spinner {
+    animation: spinnerRotate 2s linear infinite;
+  }
+}
+
+.progressFiles {
+  color: var(--color__blue--600);
+  font-size: var(--text__small);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.progressRemaining {
+  color: var(--color__text--normal);
+  font-size: var(--text__small);
+}
+
+.actions {
+  display: flex;
+  flex-shrink: 0;
+  margin-left: var(--size__300);
+  grid-area: actions;
+  text-align: center;
+}
+
+.actionsButton {
+  margin-right: var(--size__200);
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.progressBarWrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: 0 var(--size__200);
+}
+
+.progressBar {
+  border-radius: var(--size__100);
+}
+
+.footer {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  justify-content: space-between;
+  padding: var(--size__300) var(--size__300);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footerSecondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color__text--normal);
+}
+
+.downloadLocation {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  margin-right: var(--size__500);
+  font-size: var(--text__small);
+}
+
+.downloadLocationIcon {
+  margin-right: var(--size__150);
+  color: var(--color__black--500);
+}
+
+@keyframes spinnerRotate {
+  from {
+    transform:rotate(0deg);
+  }
+
+  to {
+    transform:rotate(360deg);
+  }
+}

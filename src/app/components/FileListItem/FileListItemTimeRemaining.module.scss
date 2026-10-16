@@ -1,0 +1,34 @@
+.statusDescription {
+  overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusInformation {
+  display: flex;
+  align-items: baseline;
+  margin: 0;
+}
+
+.statusInformationIcon {
+  position: relative;
+  top: 0.1rem;
+  margin-right: var(--size__100);
+  color: var(--color__black--600);
+}
+
+.statusDescriptionIcon {
+  position: relative;
+  top: 0.1125rem;
+  margin-right: var(--size__100);
+
+  .isCompleted & {
+    color: var(--color__green--500);
+  }
+
+  &.spinner {
+    animation: spinnerRotate 2s linear infinite;
+  }
+}

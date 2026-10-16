@@ -1,0 +1,53 @@
+appId: local.earthdata-download.modified
+productName: Earthdata Download Modified
+npmRebuild: false # better-sqlite3 13 ships portable N-API binaries
+directories:
+  output: 'release/${version}'
+files:
+  - dist-electron
+  - dist
+extraResources:
+  - migrations/*
+  - seeds/*
+  - LICENSE
+  - MODIFICATIONS.md
+  - README-MODIFIED.md
+  - RELEASE-NOTES-PREVIEW.md
+artifactName: ${productName}-${os}-${arch}.${ext}
+extraMetadata:
+  description: Earthdata Download Modified (unofficial preview)
+afterSign: './build/notarize.js'
+mac:
+  icon: './build/default/icons/icon.icns'
+  target:
+    - target: default
+      arch:
+        - x64
+        - arm64
+  notarize: false # afterSign will handle notarizing
+  hardenedRuntime: true
+  gatekeeperAssess: false
+  entitlements: './build/entitlements.mac.plist'
+  entitlementsInherit: './build/entitlements.mac.plist'
+win:
+  icon: './build/alt/icons/icon.ico'
+  target:
+    - target: nsis
+      arch:
+        - x64
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+linux:
+  maintainer: Likkung <113896529+Likkung@users.noreply.github.com>
+  icon: './build/alt/icons'
+  target:
+    - target: AppImage
+      arch:
+        - x64
+    - target: deb
+      arch:
+        - x64
+    - target: rpm
+      arch:
+        - x64

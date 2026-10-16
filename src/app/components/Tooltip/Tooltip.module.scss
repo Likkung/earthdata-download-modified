@@ -1,0 +1,116 @@
+.tooltipContent {
+  z-index: 1000;
+  display: flex;
+  max-width: 20rem;
+  flex-direction: column;
+  padding: var(--size__200) var(--size__250);
+  border-radius: var(--size__100);
+  margin: 0 var(--size__150);
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  background-color: var(--color__black--850);
+  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+  color: var(--color__black--100);
+  font-size: var(--text__normal);
+  line-height: 1.325;
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+
+  &[data-state='delayed-open'][data-side='top'] {
+    animation-name: slideDownAndFade;
+  }
+
+  &[data-state='delayed-open'][data-side='right'] {
+    animation-name: slideLeftAndFade;
+  }
+
+  &[data-state='delayed-open'][data-side='bottom'] {
+    animation-name: slideUpAndFade;
+  }
+
+  &[data-state='delayed-open'][data-side='left'] {
+    animation-name: slideRightAndFade;
+  }
+}
+
+.tooltipArrow {
+  fill: var(--color__black--850);
+  pointer-events: none;
+  user-select: none;
+}
+
+.content {
+  display: block;
+  color: var(--color__black--100);
+  font-size: var(--text__small);
+  font-weight: 600;
+  letter-spacing: 0.01rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.additionalContent {
+  display: block;
+  margin-top: var(--size__100);
+  color: var(--color__black--300);
+  white-space: normal;
+}
+
+.triggerWrapper {
+  display: inline-flex;
+  cursor: pointer;
+}
+
+[data-radix-popper-content-wrapper] {
+  pointer-events: none;
+  user-select: none;
+}
+
+@keyframes slideUpAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideRightAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideDownAndFade {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideLeftAndFade {
+  from {
+    opacity: 0;
+    transform: translateX(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

@@ -1,0 +1,40 @@
+.statusDescription {
+  overflow: hidden;
+  flex-grow: 1;
+  flex-shrink: 1;
+  font-size: var(--text__smaller);
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.statusInformation {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  margin: 0;
+  color: var(--color__black--650);
+  font-size: var(--text__small);
+}
+
+.statusInformationIcon {
+  position: relative;
+  top: 0.125rem;
+  margin-right: var(--size__100);
+  color: var(--color__black--650);
+}
+
+.statusInformationTooltip {
+  display: inline-flex;
+  align-items: baseline;
+  justify-content: center;
+  margin-left: var(--size__150);
+  color: var(--color__black--600);
+  cursor: default;
+  font-size: var(--text__small);
+  text-decoration: underline;
+
+  &:hover {
+    color: var(--color__black--700);
+  }
+}

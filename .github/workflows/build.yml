@@ -1,0 +1,38 @@
+# Modified 2026-10-16: optional Windows packaging, manual dispatch only.
+name: Windows packaging (manual only)
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci --ignore-scripts
+      - run: node node_modules/electron/install.js
+      - run: npm run build
+      - name: Package Windows portable ZIP
+        run: node node_modules/electron-builder/cli.js --win zip --x64 --publish never --config.win.signExecutable=false
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+      - name: Verify package contents and SQLite
+        shell: bash
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          node scripts/verify-package.cjs "release/$VERSION/win-unpacked"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Windows-x64-portable
+          path: release/**/*.zip
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0

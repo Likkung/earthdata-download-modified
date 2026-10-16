@@ -1,0 +1,77 @@
+.appVersion {
+  font-size: var(--text__normal);
+}
+
+.activeDownloadAlert {
+  margin-bottom: var(--size__500);
+}
+
+.location {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--size__500);
+}
+
+.downloadLocationLabel {
+  margin-bottom: var(--size__150);
+  color: var(--color__text--normal);
+}
+
+.downloadLocationWrapper {
+  display: flex;
+}
+
+:global(.input).downloadLocationInputWrapper {
+  display: flex;
+  overflow: hidden;
+  max-width: 100%;
+  flex-grow: 1;
+  justify-content: flex-start;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+
+  &:hover {
+    background-color: var(--color__black--100);
+  }
+}
+
+.downloadLocationButton {
+  min-width: 0;
+  flex-shrink: 1;
+  border-radius: 0.25rem;
+  margin-right: var(--size__100);
+}
+
+.clearDownloadLocationButton {
+  flex-shrink: 0;
+}
+
+.downloadLocationText {
+  padding: 0 var(--size__500) 0 0;
+  color: var(--color__text--dark);
+}
+
+.downloadLocationIcon {
+  flex-grow: 0;
+  flex-shrink: 0;
+  margin-right: var(--size__150);
+  color: var(--color__black--500);
+}
+
+.sendUsageMetricsForm {
+  min-width: 0;
+  flex-shrink: 1;
+  padding: 5px;
+  border-color: var(--color__black--300);
+  border-radius: 0.25rem;
+  background-color: var(--color__black--050);
+  color: var(--color__text--dark);
+  font-size: 1rem;
+}
+
+.settingsClearDefaultDownload {
+  width: 20%;
+  color: var(--color__text--dark);
+}

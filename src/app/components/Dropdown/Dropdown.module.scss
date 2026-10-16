@@ -1,0 +1,17 @@
+@use "../../css/vars/colors" as colors;
+
+.separator {
+  height: 1px;
+  background-color: var(--color__black--200);
+}
+
+.content {
+  position: relative;
+  z-index: 10;
+  overflow: hidden;
+  border: 1px solid var(--color__black--300);
+  border-radius: var(--size__100);
+  margin-bottom: var(--size__500);
+  background-color: var(--color__white);
+  box-shadow: var(--shadow__box-shadow--normal);
+}

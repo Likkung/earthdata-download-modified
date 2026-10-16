@@ -1,0 +1,18 @@
+.content {
+  padding: 0 var(--size__500);
+  margin-bottom: var(--size__500);
+  font-size: var(--text__normal);
+  text-align: center;
+}
+
+.actions {
+  text-align: center;
+}
+
+.actionsButton {
+  margin-right: var(--size__200);
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

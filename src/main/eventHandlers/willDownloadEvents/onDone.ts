@@ -1,0 +1,125 @@
+// @ts-nocheck
+// Modified 2026-10-14 for the unofficial Earthdata Download Modified; see MODIFICATIONS.md.
+
+import fs from 'fs'
+import downloadStates from '../../../app/constants/downloadStates'
+import finishDownload from './finishDownload'
+import startNextDownload from '../../utils/startNextDownload'
+import metricsEvent from '../../../app/constants/metricsEvent'
+import metricsLogger from '../../utils/metricsLogger'
+import retryDownload from '../../utils/retryDownload'
+import { clearResumeAuthorization } from '../../utils/resumeAuthorization'
+
+/**
+ * Handles the DownloadItem 'done' event
+ * @param {Object} params
+ * @param {Object} params.currentDownloadItems CurrentDownloadItems class instance that holds all of the active DownloadItems instances
+ * @param {Object} params.database `EddDatabase` instance
+ * @param {String} params.downloadId downloadId of the DownloadItem being downloaded
+ * @param {Object} params.downloadIdContext Object where we can associate a newly created download to a downloadId
+ * @param {Object} params.item Electron DownloadItem class instance
+ * @param {String} params.state Updated state of the DownloadItem
+ * @param {Object} params.webContents Electron BrowserWindow instance's webContents
+ */
+const onDone = async ({
+  currentDownloadItems,
+  database,
+  downloadId,
+  downloadIdContext,
+  item,
+  state,
+  webContents
+}) => {
+  const filename = item.getFilename()
+  clearResumeAuthorization(item.getURLChain())
+  // Get the download item from the database
+  const file = await database.getFileWhere({
+    filename,
+    downloadId
+  })
+
+  // If the file is not found in the database, cancel the download
+  if (!file) {
+    return
+  }
+
+  const {
+    id: fileId,
+    state: previousState
+  } = file
+  // Remove the item from the currentDownloadItems
+  currentDownloadItems.removeItem(downloadId, filename)
+  let errors
+
+  const { state: downloadState } = await database.getDownloadById(downloadId)
+  let updatedState = previousState
+  switch (state) {
+    case 'cancelled':
+      // If the download is `appQuitting`, don't change the state of the file
+      if (downloadState !== downloadStates.appQuitting) {
+        updatedState = downloadStates.cancelled
+      }
+
+      break
+    case 'interrupted':
+      updatedState = downloadStates.interruptedCanNotResume
+      errors = 'This file could not be downloaded'
+      metricsLogger(database, {
+        eventType: metricsEvent.downloadErrored,
+        data: {
+          downloadId,
+          filename
+        }
+      })
+
+      break
+    default:
+      updatedState = downloadStates.completed
+      break
+  }
+
+  // If the `previousState` is not active, don't worry about updating the file
+  if (state === 'completed' || previousState === downloadStates.active || previousState === downloadStates.starting) {
+    // Update the state in the database
+    await database.updateFileById(fileId, {
+      cancelId: null,
+      errors,
+      percent: updatedState === downloadStates.completed ? 100 : 0,
+      state: updatedState,
+      timeEnd: new Date().getTime(),
+      ...(state === 'completed' ? {
+        resumeData: null,
+        retryCount: 0,
+        nextRetryAt: 0
+      } : {})
+    })
+  }
+
+  if (state === 'interrupted') {
+    await retryDownload({
+      database,
+      fileId
+    })
+  }
+
+  if (state === 'completed') {
+    const backupPath = `${item.getSavePath()}.edd-part`
+    if (fs.existsSync(backupPath)) fs.unlinkSync(backupPath)
+  }
+
+  // Start the next download
+  await startNextDownload({
+    currentDownloadItems,
+    database,
+    downloadIdContext,
+    webContents
+  })
+
+  // Finish the download
+  await finishDownload({
+    database,
+    downloadId
+  })
+}
+
+export default onDone

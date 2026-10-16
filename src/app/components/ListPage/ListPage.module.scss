@@ -1,0 +1,113 @@
+.listPage {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+  flex-direction: column;
+
+  &.isEmptyState {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.listWrapper {
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+
+  &::-webkit-scrollbar {
+    width: 0.625rem;
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+    border-right: 2px solid transparent;
+    border-left: 2px solid transparent;
+    background-clip: padding-box;
+    background-color: var(--color__black--300);
+    transition: all .75s var(--animation__spring);
+    visibility: hidden;
+
+    &:hover {
+      background-color: var(--color__black--400);
+    }
+
+    &:active {
+      background-color: var(--color__black--500);
+    }
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.contentWrapper {
+  position: relative;
+  min-height: 0;
+  flex: 1;
+}
+
+.scrollableWrapper {
+  position: absolute;
+  inset: 0;
+}
+
+.list {
+  max-height: 100%;
+  padding: 0;
+  padding-bottom: var(--size__600);
+  margin: 0;
+  list-style: none;
+}
+
+.content {
+  position: absolute;
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  inset: 0;
+}
+
+.icon {
+  color: var(--color__black--500);
+  font-size: 3rem;
+}
+
+.message {
+  margin-top: var(--size__500);
+  color: var(--color__black--550);
+  font-size: var(--size__500);
+  font-weight: 500;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid transparent;
+  transition:
+    border-bottom 200ms cubic-bezier(0.65, 0, 0.35, 1)
+    box-shadow 200ms cubic-bezier(0.65, 0, 0.35, 1);
+
+  .hasScrolledList & {
+    border-bottom: 1px solid var(--color__black--200);
+    box-shadow: var(--shadow__box-shadow--normal);
+  }
+}
+
+.actions {
+  display: flex;
+  width: auto;
+  flex-flow: column wrap;
+  align-items: center;
+  margin-top: var(--size__500);
+}

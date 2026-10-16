@@ -1,0 +1,11 @@
+.time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+}
+
+.timeIcon {
+  margin-right: var(--size__150);
+  font-size: var(--size__300);
+}

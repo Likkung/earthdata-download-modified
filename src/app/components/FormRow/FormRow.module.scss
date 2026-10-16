@@ -1,0 +1,16 @@
+.wrapper {
+  margin-bottom: var(--size__600);
+}
+
+.label {
+  font-size: var(--text__large);
+  font-weight: 600;
+  line-height: var(--size__700);
+  text-align: left;
+}
+
+.description {
+  margin: 0;
+  margin-bottom: var(--size__350);
+  font-size: var(--text__normal);
+}
